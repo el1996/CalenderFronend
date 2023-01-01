@@ -9,7 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import NotificationService from "../services/NotificationService";
-import TimezoneSelect, { allTimezones } from "react-timezone-select";
+import TimezoneSelect from "react-timezone-select";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const options = [
 	{ name: "None", value: "NONE" },
@@ -34,17 +36,13 @@ export default function SettingModal() {
 		notificationSetting ? notificationSetting.removeGuest : "NONE"
 	);
 	const [userStatusChange, setUserStatusChange] = useState(
-		notificationSetting
-			? notificationSetting.userStatusChanged
-			: "NONE"
+		notificationSetting ? notificationSetting.userStatusChanged : "NONE"
 	);
 	const [upcomingEvent, setUpcomingEvent] = useState(
 		notificationSetting ? notificationSetting.upcomingEvent : "NONE"
 	);
 	const [selectedTimezone, setSelectedTimezone] = useState(
-		notificationSetting
-			? notificationSetting.timeZone
-			: "Asia/Jerusalem"
+		notificationSetting ? notificationSetting.timeZone : "Asia/Jerusalem"
 	);
 	const { currentUser } = useContext(AuthContext);
 
@@ -58,7 +56,7 @@ export default function SettingModal() {
 			removeGuest: removeGuest,
 			userStatusChanged: userStatusChange,
 			upcomingEvent: upcomingEvent,
-			timeZone: selectedTimezone.value,
+			timeZone: selectedTimezone,
 		};
 
 		const token = currentUser.token;
@@ -67,17 +65,18 @@ export default function SettingModal() {
 			token
 		)
 			.then((res) => {
-				alert(res.data?.message);
+				setShowSettingModal(false);
+				toast.success(res.data?.message);
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				setShowSettingModal(false);
+				toast.error(error?.response?.data.error);
 			});
-
-		setShowSettingModal(false);
 	}
 
 	return (
 		<div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
+			<ToastContainer position="top-center" theme="dark" />
 			<form className="bg-white rounded-lg shadow-2xl w-1/4">
 				<header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
 					<span className="material-icons-outlined text-gray-400">
@@ -185,7 +184,9 @@ export default function SettingModal() {
 								id="demo-simple-select"
 								value={userStatusChange}
 								label="user status change"
-								onChange={(e) => setUserStatusChange(e.target.value)}
+								onChange={(e) =>
+									setUserStatusChange(e.target.value)
+								}
 							>
 								{options.map((o, idx) => (
 									<MenuItem key={idx} value={o.value}>
@@ -205,7 +206,9 @@ export default function SettingModal() {
 								id="demo-simple-select"
 								value={upcomingEvent}
 								label="upcoming events"
-								onChange={(e) => setUpcomingEvent(e.target.value)}
+								onChange={(e) =>
+									setUpcomingEvent(e.target.value)
+								}
 							>
 								{options.map((o, idx) => (
 									<MenuItem key={idx} value={o.value}>

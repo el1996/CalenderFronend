@@ -3,19 +3,14 @@ import { Link } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import FormatUtils from "../../utils/formatUtils";
-import { useNavigate } from "react-router-dom";
-// import { AuthContext } from "../../context/AuthContext";
 import * as Styles from "./LoginStyles";
-import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { GithubLoginButton } from "react-social-login-buttons";
 
 export const Login = (props) => {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
-	const [selectedTab, setSelectedTab] = useState("login");
 	const [errors, setErrors] = useState({});
-	const navigate = useNavigate();
 	const { login } = useContext(AuthContext);
 
 	const handleSubmit = (e) => {
@@ -46,7 +41,9 @@ export const Login = (props) => {
 					type="email"
 					required
 					error={
-						typeof errors === "object" ? getInputError("email") : null
+						typeof errors === "object"
+							? getInputError("email")
+							: null
 					}
 				/>
 				<Input

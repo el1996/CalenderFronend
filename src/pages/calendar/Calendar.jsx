@@ -10,6 +10,8 @@ import NotificationService from "../../services/NotificationService";
 import { AuthContext } from "../../context/AuthContext";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 let stompClient = null;
 
@@ -33,7 +35,7 @@ const Calendar = () => {
 				setNotificationSetting(res.data?.data);
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				toast.error(error?.response?.data.error);
 			});
 	}
 	function connect() {
@@ -59,7 +61,7 @@ const Calendar = () => {
 		// 	]);
 		// }
 
-		alert(payload.body);
+		toast(payload.body);
 
 		// if (!tabs.some((tab) => tab.id === payloadData.sender.id)) {
 		// 	setTabs([...tabs, payloadData.sender]);
@@ -67,7 +69,7 @@ const Calendar = () => {
 	};
 
 	const onError = (err) => {
-		alert(err);
+		toast.error(err);
 	};
 	useEffect(() => {
 		getSetting();
@@ -76,6 +78,7 @@ const Calendar = () => {
 
 	return (
 		<React.Fragment>
+			<ToastContainer position="top-center" theme="dark" />
 			{showEventModal && <EventModal />}
 			{showSettingModal && <SettingModal />}
 			<div className="h-screen flex flex-col">
@@ -88,25 +91,6 @@ const Calendar = () => {
 		</React.Fragment>
 	);
 };
-
-// function sendNotification(selectedEvent, message) {
-
-// 	selectedEvent.guests.forEach((guest) => {
-// 		const notificationDetails = {
-// 			guest: guest.user,
-// 			message,
-// 			eventId: selectedEvent.id,
-// 			notificationType: "UPDATE_EVENT",
-// 		};
-// 		if (stompClient) {
-// 			stompClient.send(
-// 				"/app/event-notification",
-// 				{},
-// 				JSON.stringify(notificationDetails)
-// 			);
-// 		}
-// 	});
-// }
 
 function sendNotification(selectedEvent, message, type) {
 	const notificationDetails = {

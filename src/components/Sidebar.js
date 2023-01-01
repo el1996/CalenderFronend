@@ -5,9 +5,10 @@ import Labels from "./Labels";
 import { TextField, Box, InputAdornment } from "@mui/material";
 import ScreenShareOutlinedIcon from "@mui/icons-material/ScreenShareOutlined";
 import IconButton from "@mui/material/IconButton";
-import GlobalContext from "../context/GlobalContext";
 import { AuthContext } from "../context/AuthContext";
 import EventService from "../services/EventService";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Sidebar() {
 	const { currentUser } = useContext(AuthContext);
@@ -18,15 +19,16 @@ export default function Sidebar() {
 
 		EventService.share(shareToEmail, token)
 			.then((res) => {
-				alert(res.data?.message);
+				toast.success(`${res.data?.message} to ${shareToEmail}`);
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				toast.error(error?.response?.data.error);
 			});
 		setShareToEmail("");
 	}
 	return (
 		<aside className="border p-5 w-64">
+			<ToastContainer position="top-center" theme="dark" />
 			<CreateEventButton />
 			<SmallCalendar />
 			<Box>

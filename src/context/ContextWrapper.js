@@ -1,23 +1,13 @@
-import React, {
-	useState,
-	useEffect,
-	useReducer,
-	useMemo,
-	useContext,
-} from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import GlobalContext from "./GlobalContext";
 import dayjs from "dayjs";
-import EventService from "../services/EventService";
-import { AuthContext } from "./AuthContext";
 
 const SavedEventsReducer = (state, { type, payload }) => {
 	switch (type) {
 		case "push":
 			return [...state, payload];
 		case "update":
-			return state.map((evt) =>
-				evt.id === payload.id ? payload : evt
-			);
+			return state.map((evt) => (evt.id === payload.id ? payload : evt));
 		case "delete":
 			return state.filter((evt) => evt.id !== payload.id);
 		default:
@@ -25,9 +15,6 @@ const SavedEventsReducer = (state, { type, payload }) => {
 	}
 };
 function initEvents() {
-	//const storageEvents = localStorage.getItem("savedEvents");
-	// const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
-	// return parsedEvents;
 	return [];
 }
 
@@ -46,8 +33,7 @@ export default function ContextWrapper(props) {
 	);
 	const [savedCalendars, setSavedCalendars] = useState([]);
 	const [events, setEvents] = useState([]);
-	const [notificationSetting, setNotificationSetting] =
-		useState(null);
+	const [notificationSetting, setNotificationSetting] = useState(null);
 
 	const filteredEvents = useMemo(() => {
 		return savedEvents.filter((evt) =>
@@ -57,31 +43,6 @@ export default function ContextWrapper(props) {
 				.includes(evt.label)
 		);
 	}, [savedEvents, labels]);
-
-	// useEffect(() => {
-	// 	localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
-	// }, [savedEvents]);
-
-	// useEffect(() => {
-	// 	async function getMyEvents() {
-	// 		const response = await EventService.getMyEvents(
-	// 			12,
-	// 			2022,
-	// 			currentUser?.token
-	// 		);
-	// 		console.log("My events");
-	// 		console.log(response);
-	// 		// response.data?.data.map((evt) => {
-	// 		// 	if (evt.label === undefined) {
-	// 		// 		evt.label = "red";
-	// 		// 	}
-	// 		// });
-	// 		// setLabels(response.data?.data);
-	// 	}
-	// 	if (currentUser != null) {
-	// 		getMyEvents();
-	// 	}
-	// }, [currentUser]);
 
 	useEffect(() => {
 		setLabels((prevLabels) => {
@@ -116,6 +77,8 @@ export default function ContextWrapper(props) {
 			labels.map((lbl) => (lbl.label === label.label ? label : lbl))
 		);
 	}
+
+	useEffect(() => {}, [events]);
 
 	return (
 		<GlobalContext.Provider

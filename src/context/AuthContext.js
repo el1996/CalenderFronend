@@ -1,7 +1,4 @@
-import { FOCUSABLE_SELECTOR } from "@testing-library/user-event/dist/utils";
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
 export const AuthContext = createContext();
@@ -10,7 +7,6 @@ export const AuthContextProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [isAuth, setIsAuth] = useState(false);
 	const [errors, setErrors] = useState({});
-	//const navigate = useNavigate();
 
 	const login = async (newUser) => {
 		try {

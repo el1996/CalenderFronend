@@ -1,38 +1,12 @@
 import dayjs from "dayjs";
 import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
 import GlobalContext from "../context/GlobalContext";
-import EventService from "../services/EventService";
-
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-// dayjs.extend(utc);
-// dayjs.extend(timezone);
 
 export default function Day({ day, rowIdx }) {
 	const [dayEvents, setDayEvents] = useState([]);
-	const { currentUser } = useContext(AuthContext);
 
-	const {
-		setDaySelected,
-		setShowEventModal,
-		filteredEvents,
-		events,
-		setSelectedEvent,
-	} = useContext(GlobalContext);
-
-	// useEffect(() => {
-	// 	const events = filteredEvents.filter((evt) => {
-	// 		return (
-	// 			dayjs(evt.start).format("DD-MM-YY") ===
-	// 				day.format("DD-MM-YY") ||
-	// 			dayjs(evt.end).format("DD-MM-YY") === day.format("DD-MM-YY")
-	// 		);
-	// 	});
-
-	// 	setDayEvents(events);
-	// }, [filteredEvents, day]);
+	const { setDaySelected, setShowEventModal, events, setSelectedEvent } =
+		useContext(GlobalContext);
 
 	useEffect(() => {
 		const Myevents = events.filter((evt) => {

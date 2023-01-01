@@ -8,11 +8,8 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
@@ -53,10 +50,6 @@ export default function CalendarHeader() {
 	return (
 		<header>
 			<div className="px-4 py-2 flex items-center">
-				{/* <img src={logo} alt="calendar" className="mr-2 w-12 h-12" /> */}
-				{/* <h1 className="mr-10 text-xl text-gray-500 fond-bold">
-					{currentUser.user.name} Calendar
-				</h1> */}
 				<React.Fragment>
 					<Box
 						sx={{
@@ -71,12 +64,18 @@ export default function CalendarHeader() {
 								onClick={handleClick}
 								size="small"
 								sx={{ ml: 2 }}
-								aria-controls={open ? "account-menu" : undefined}
+								aria-controls={
+									open ? "account-menu" : undefined
+								}
 								aria-haspopup="true"
 								aria-expanded={open ? "true" : undefined}
 							>
 								<Avatar sx={{ width: 40, height: 40 }}>
-									{Array.from(currentUser.user.name.toUpperCase())[0]}
+									{
+										Array.from(
+											currentUser.user.name.toUpperCase()
+										)[0]
+									}
 								</Avatar>
 							</IconButton>
 						</Tooltip>
@@ -113,8 +112,14 @@ export default function CalendarHeader() {
 								},
 							},
 						}}
-						transformOrigin={{ horizontal: "right", vertical: "top" }}
-						anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+						transformOrigin={{
+							horizontal: "right",
+							vertical: "top",
+						}}
+						anchorOrigin={{
+							horizontal: "right",
+							vertical: "bottom",
+						}}
 					>
 						<MenuItem>
 							<Avatar /> {currentUser.user.name}

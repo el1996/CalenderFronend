@@ -1,30 +1,21 @@
-import {
-	Alert,
-	Box,
-	Grid,
-	InputAdornment,
-	TextField,
-} from "@mui/material";
+import { Box, Grid, InputAdornment, TextField } from "@mui/material";
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
-
-import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import PersonIcon from "@mui/icons-material/Person";
-import FolderIcon from "@mui/icons-material/Folder";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
 import MarkunreadIcon from "@mui/icons-material/Markunread";
 import DoneIcon from "@mui/icons-material/Done";
 import EventService from "../services/EventService";
 import { AuthContext } from "../context/AuthContext";
 import { sendNotification } from "../pages/calendar/Calendar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const GuestModel = (props) => {
 	const { selectedEvent } = useContext(GlobalContext);
@@ -38,12 +29,12 @@ const GuestModel = (props) => {
 
 		EventService.inviteGuest(eventId, guestEmail, token)
 			.then((res) => {
-				alert(res.data?.message);
+				toast.success(res.data?.message);
 				const message = `Guest with email ${guestEmail} was invited to ${selectedEvent.title} event`;
 				sendNotification(selectedEvent, message, "INVITE_GUEST");
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				toast.error(error?.response?.data.error);
 			});
 		setGuestEmail("");
 	}
@@ -55,12 +46,12 @@ const GuestModel = (props) => {
 
 		EventService.removeGuest(eventId, email, token)
 			.then((res) => {
-				alert(res.data?.message);
+				toast.success(res.data?.message);
 				const message = `Guest with email ${email} was removed from ${selectedEvent.title} event`;
 				sendNotification(selectedEvent, message, "REMOVE_GUEST");
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				toast.error(error?.response?.data.error);
 			});
 		setGuestEmail("");
 	}
@@ -71,11 +62,10 @@ const GuestModel = (props) => {
 
 		EventService.setGuestAsAdmin(eventId, guestToAdminEmail, token)
 			.then((res) => {
-				alert(res.data?.message);
-				const message = `Guest with email ${guestToAdminEmail} is now Admin of ${selectedEvent.title} event`;
+				toast.success(res.data?.message);
 			})
 			.catch((error) => {
-				alert(error?.response?.data.errors);
+				toast.error(error?.response?.data.error);
 			});
 		setGuestToAdminEmail("");
 	}
@@ -102,6 +92,7 @@ const GuestModel = (props) => {
 
 	return (
 		<div>
+			<ToastContainer position="top-center" theme="dark" />
 			<Box
 				sx={{
 					flexGrow: 1,
@@ -125,7 +116,9 @@ const GuestModel = (props) => {
 											<IconButton
 												edge="end"
 												aria-label="delete"
-												onClick={() => handleRemove(guest)}
+												onClick={() =>
+													handleRemove(guest)
+												}
 											>
 												<DeleteIcon />
 											</IconButton>
